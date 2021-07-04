@@ -1,0 +1,17 @@
+<div class="card mt-3 bg-light" style="width: 20rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{ title }}</h5>
+    <label>Amount</label>
+    <input type="number" class="form-control">
+    <label>Description</label>
+    <input type="text" class="form-control">
+    <label>Date</label>
+    <input type="datetime-local" class="form-control">
+    <label>Category</label>
+    <select name="" class="form-control">
+      <option *ngFor="let c of categories"></option>
+    </select>
+    <br>
+    <button type="buton" class="btn btn-primary card-link" (click)="onSubmit()">{{ btnText }}</button>
+  </div>
+</div>

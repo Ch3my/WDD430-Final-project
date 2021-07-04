@@ -1,0 +1,23 @@
+<ul class="list-group">
+    <li class="list-group-item list-group-item-warning d-flex justify-content-between">
+        <span style="display: flex; align-items: center;">
+            Total Expenses
+        </span>
+        <span style="font-size: 2rem;">${{ totalExpenses }}</span>
+    </li>
+</ul>
+<br>
+<div class="list-group">
+    <a href="#" class="list-group-item list-group-item-action" *ngFor="let d of documents"
+        (click)="onClickExpense($event)">
+        <div style="display: grid; grid-template-columns: 8fr 2fr;">
+            <div>
+                <h5>{{ d.description }}</h5>
+                <small>{{ moment(d.date).format('MM-DD-YYYY') }}</small>
+            </div>
+            <div style="font-size: 2rem; text-align: right;">
+                <span>$ {{ d.amount }}</span>
+            </div>
+        </div>
+    </a>
+</div>
