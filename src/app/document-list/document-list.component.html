@@ -9,7 +9,7 @@
 <br>
 <div class="list-group">
     <a href="#" class="list-group-item list-group-item-action" *ngFor="let d of documents"
-        (click)="onClickExpense($event)">
+        (click)="onClickExpense($event, d.id)">
         <div style="display: grid; grid-template-columns: 8fr 2fr;">
             <div>
                 <h5>{{ d.description }}</h5>

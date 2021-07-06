@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DocumentListComponent } from './document-list/document-list.component';
 import { DocumentEditComponent } from './document-edit/document-edit.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { DocumentEditComponent } from './document-edit/document-edit.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

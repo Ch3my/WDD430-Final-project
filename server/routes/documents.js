@@ -31,9 +31,9 @@ router.post('/', (req, res, next) => {
     //create new document
     const document = new Document({
         id: maxDocumentId,
-        name: req.body.name,
         description: req.body.description,
-        url: req.body.url
+        amount: req.body.amount,
+        date: req.body.date 
     });
 
     //save document to database

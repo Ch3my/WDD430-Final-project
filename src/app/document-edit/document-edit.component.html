@@ -2,16 +2,18 @@
   <div class="card-body">
     <h5 class="card-title">{{ title }}</h5>
     <label>Amount</label>
-    <input type="number" class="form-control">
+    <input type="number" class="form-control" [(ngModel)]="document.amount">
     <label>Description</label>
-    <input type="text" class="form-control">
+    <input type="text" class="form-control" [(ngModel)]="document.description">
     <label>Date</label>
-    <input type="datetime-local" class="form-control">
+    <input type="date" class="form-control" [(ngModel)]="document.date.toISOString().split('T')[0]">
     <label>Category</label>
-    <select name="" class="form-control">
+    <select name="" class="form-control" [(ngModel)]="document.category">
       <option *ngFor="let c of categories"></option>
     </select>
     <br>
     <button type="buton" class="btn btn-primary card-link" (click)="onSubmit()">{{ btnText }}</button>
+    <button type="buton" class="btn btn-danger card-link" 
+    (click)="onDelete()" *ngIf="isEditing">Delete</button>
   </div>
 </div>

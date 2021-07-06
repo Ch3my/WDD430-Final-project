@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Category } from '../models/category.model';
+import { Document } from '../models/document.model';
+import { DocumentService } from '../services/document.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-document-edit',
@@ -10,23 +13,41 @@ export class DocumentEditComponent implements OnInit {
   categories: Category[] = []
   title: String = 'Add Expense'
   btnText: String = 'Save expense'
+  isEditing: boolean = false
+  @Input() editingDocumentId: Number = 0;
 
-  constructor() { }
+  document: Document = {
+    id: null,
+    description: '',
+    amount: 0,
+    date: new Date()
+  }
+
+  constructor(private documentService: DocumentService, 
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     // TODO. Leer categorias desde servicio
+
   }
 
-  onSubmit(){
+  onSubmit() {
     // Se ejecuta desde el boton
     // llama a onCreate si es nuevo y onUpdate
     // cuando editan un documento
     console.log("onSubmit")
+    if (this.isEditing) {
+      this.onUpdate()
+    } else {
+      this.onCreate()
+    }
   }
 
-  // 
   onCreate() {
-    // TODO. Crear Documento nuevo 
+    console.log("onCreate")
+    // Crear Documento nuevo 
+    this.documentService.addDocument(this.document);
   }
 
   onEdit() {
@@ -40,4 +61,7 @@ export class DocumentEditComponent implements OnInit {
     // TODO. Guardar documento creado usando el servicio
   }
 
+  onDelete(){
+
+  }
 }

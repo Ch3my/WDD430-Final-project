@@ -1,9 +1,9 @@
 import { Category } from "./category.model";
 
 export class Document {
-    constructor(public id: Number,
+    constructor(public id: number,
         public description: string,
-        public amount: Number,
+        public amount: number,
         public date: Date,
         public category?: Category
     ) {

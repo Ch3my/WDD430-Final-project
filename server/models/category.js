@@ -6,17 +6,9 @@ let documentSchema = new Schema({
     type: Number,
     required: true
   },
-  amount: {
-    type: Number,
-    required: true
-  },
   description: {
     type: String
   },
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category'
-  }
 });
 
-module.exports = mongoose.model('Document', documentSchema);
+module.exports = mongoose.model('Category', documentSchema);

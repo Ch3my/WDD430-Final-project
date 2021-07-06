@@ -1,30 +1,23 @@
-var Sequence = require('../models/sequence');
+const Sequence = require('../models/sequence');
 
 var maxDocumentId;
-var maxMessageId;
-var maxContactId;
+// var maxMessageId;
+// var maxContactId;
 var sequenceId = null;
 
 function SequenceGenerator() {
-
   Sequence.findOne()
-    .exec(function(err, sequence) {
+    .exec(function (err, sequence) {
       if (err) {
         console.log(err)
-        // return res.status(500).json({
-        //   title: 'An error occurred',
-        //   error: err
-        // });
       }
 
-      // sequenceId = sequence._id;
+      sequenceId = sequence._id;
       maxDocumentId = sequence.maxDocumentId;
-      maxMessageId = sequence.maxMessageId;
-      maxContactId = sequence.maxContactId;
     });
 }
 
-SequenceGenerator.prototype.nextId = function(collectionType) {
+SequenceGenerator.prototype.nextId = function (collectionType) {
 
   var updateObject = {};
   var nextId;
@@ -32,7 +25,7 @@ SequenceGenerator.prototype.nextId = function(collectionType) {
   switch (collectionType) {
     case 'documents':
       maxDocumentId++;
-      updateObject = {maxDocumentId: maxDocumentId};
+      updateObject = { maxDocumentId: maxDocumentId };
       nextId = maxDocumentId;
       break;
     // case 'messages':
@@ -49,8 +42,8 @@ SequenceGenerator.prototype.nextId = function(collectionType) {
       return -1;
   }
 
-  Sequence.update({_id: sequenceId}, {$set: updateObject},
-    function(err) {
+  Sequence.update({ _id: sequenceId }, { $set: updateObject },
+    function (err) {
       if (err) {
         console.log("nextId error = " + err);
         return null
