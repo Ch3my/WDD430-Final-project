@@ -6,7 +6,7 @@
     <label>Description</label>
     <input type="text" class="form-control" [(ngModel)]="document.description">
     <label>Date</label>
-    <input type="date" class="form-control" [(ngModel)]="document.date.toISOString().split('T')[0]">
+    <input type="date" class="form-control" [(ngModel)]="viewDate">
     <label>Category</label>
     <select name="" class="form-control" [(ngModel)]="document.category">
       <option *ngFor="let c of categories"></option>

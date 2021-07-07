@@ -2,10 +2,10 @@
   <div class="col">
     <h2>Expenses</h2>
     <!-- Document List -->
-    <app-document-list></app-document-list>
+    <app-document-list (selectedDocument)="selectedDocument($event)"></app-document-list>
   </div>
   <div class="col">
     <!-- Create/Edit Document -->
-    <app-document-edit></app-document-edit>
+    <app-document-edit [editingDocumentId]="editingDocumentId"></app-document-edit>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Document } from '../models/document.model';
 import { DocumentService } from '../services/document.service';
@@ -13,7 +13,7 @@ import * as moment from 'moment';
 export class DocumentListComponent implements OnInit {
   // pass moment to the view
   moment: any = moment;
-  totalExpenses: Number = 0
+  totalExpenses: number = 0
   // documents: Document[] = [{
   //   id: 1,
   //   description: 'Expense Description',
@@ -22,7 +22,8 @@ export class DocumentListComponent implements OnInit {
   // }]
   documents: Document[] = []
   subscription: Subscription
-  @Input() editingDocumentId: Number = 0;
+  // @Input() editingDocumentId: Number = 0;
+  @Output() selectedDocument: EventEmitter<any> = new EventEmitter<number>();
 
   constructor(private documentService: DocumentService,
     private router: Router,
@@ -31,19 +32,21 @@ export class DocumentListComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.documentService.documentListChangedEvent.subscribe((documentsList: Document[]) => {
       this.documents = documentsList
+      this.totalExpenses = 0
+      // Sumar todos los gastos y agregar a variable
+      for (let d of this.documents) {
+        this.totalExpenses = this.totalExpenses + d.amount
+      }
     })
     // No asignamos la variable directo sino a traves de la subscripcion 
     this.documentService.getDocuments()
-    // TODO. Sumar todos los gastos y agregar a variable
   }
 
   onClickExpense(e, id) {
     e.preventDefault()
-    // console.log("Click Expense")
-    console.log(id)
-
+    // console.log(id)
     // TODO. Open / pass data to document-edit
-    // this.router.navigate([`/documents/${id}`]);
+    this.selectedDocument.emit(id)
   }
 
 }

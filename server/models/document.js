@@ -13,6 +13,9 @@ let documentSchema = new Schema({
   description: {
     type: String
   },
+  date: {
+    type: Date
+  },
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category'

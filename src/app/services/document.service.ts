@@ -55,6 +55,8 @@ export class DocumentService {
         this.maxDocumentId++
         newDocument.id = this.maxDocumentId
 
+        console.log(newDocument)
+
         this.http.post('http://localhost:3000/documents/', newDocument)
             .subscribe(
                 (response: { message: string, document: Document }) => {
@@ -66,8 +68,12 @@ export class DocumentService {
 
     getDocument(id: number): Document {
         // Se asegura de tener la lista llena
-        this.getDocuments()
+        // this.getDocuments()
         // return this.http.get<Document>('http://localhost:3000/documents/' + id)
-        return this.documents.find(o => o.id == id)
+
+        // Convierte el date string en tipo Date
+        var doc = this.documents.find(o => o.id == id)
+        doc.date = new Date(doc.date)
+        return doc
     }
 }
