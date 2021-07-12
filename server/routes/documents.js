@@ -8,6 +8,7 @@ var router = express.Router();
 router.get('/', (req, res, next) => {
     //retrieve all documents
     Document.find()
+        .populate('category')
         .then(documents => {
             //send scucessful response with mssage and documents
             res.status(200).json(
@@ -33,7 +34,8 @@ router.post('/', (req, res, next) => {
         id: maxDocumentId,
         description: req.body.description,
         amount: req.body.amount,
-        date: req.body.date 
+        date: req.body.date,
+        category: req.body.category,
     });
 
     //save document to database
@@ -57,9 +59,10 @@ router.put('/:id', (req, res, next) => {
     Document.findOne({ id: req.params.id })
         .then(document => {
             //re assign values with those comign from request
-            document.name = req.body.name;
             document.description = req.body.description;
-            document.url = req.body.url;
+            document.amount = req.body.amount;
+            document.date = req.body.date;
+            document.category = req.body.category;
 
             //update entire document
             Document.updateOne({ id: req.params.id }, document)

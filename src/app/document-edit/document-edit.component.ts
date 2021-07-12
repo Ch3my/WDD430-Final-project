@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Category } from '../models/category.model';
 import { Document } from '../models/document.model';
 import { DocumentService } from '../services/document.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as moment from 'moment';
+import { CategoryService } from '../services/category.service';
 
 @Component({
   selector: 'app-document-edit',
@@ -16,22 +17,38 @@ export class DocumentEditComponent implements OnInit, OnChanges {
   btnText: String = 'Save expense'
   isEditing: boolean = false
   viewDate: string = moment().format('YYYY-MM-DD')
+  categoryId: number = 0
 
   @Input() editingDocumentId: Number = null
+  @Output() resetEditingDocId: EventEmitter<any> = new EventEmitter<any>();
 
   document: Document = {
     id: null,
     description: '',
     amount: 0,
-    date: new Date()
+    date: new Date(),
+    category: null
+  }
+  originalDocument: Document = {
+    id: null,
+    description: '',
+    amount: 0,
+    date: new Date(),
+    category: null
   }
 
   constructor(private documentService: DocumentService,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private categoriesService: CategoryService) { }
 
   ngOnInit(): void {
-    // TODO. Leer categorias desde servicio
+    //  Leer categorias desde servicio
+    this.categoriesService.categoryListChangedEvent.subscribe(cat => {
+      // console.log(cat)
+      this.categories = cat
+    })
+    this.categoriesService.getCategories()
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -47,7 +64,6 @@ export class DocumentEditComponent implements OnInit, OnChanges {
     // Se ejecuta desde el boton
     // llama a onCreate si es nuevo y onUpdate
     // cuando editan un documento
-    // console.log("onSubmit")
     if (this.isEditing) {
       this.onUpdate()
     } else {
@@ -57,30 +73,67 @@ export class DocumentEditComponent implements OnInit, OnChanges {
 
   onCreate() {
     // Crear Documento nuevo 
-    // console.log(this.document)
     this.document.date = new Date(this.viewDate.split('-').join('/'))
-    // console.log(this.viewDate)
     // console.log(this.document)
 
-    this.documentService.addDocument(this.document);
+    this.document.category = this.categories.find(o => o.id == this.categoryId )
+    this.documentService.addDocument(this.document)
+    this.resetDocument()
   }
 
   onEdit(id) {
-    // TODO. Cargar datos del documento que estamos editando
+    // Cargar datos del documento que estamos editando
     // Actualizar el titulo
     this.title = 'Edit Expense'
     this.btnText = 'Update expense'
-    // console.log(this.documentService.getDocument(id))
-
+    console.log(this.documentService.getDocument(id))
+    
     this.document = this.documentService.getDocument(id)
+    this.categoryId = this.document.category.id 
+    this.originalDocument = this.documentService.getDocument(id)
     this.viewDate = moment(this.document.date).format('YYYY-MM-DD')
   }
 
   onUpdate() {
-    // TODO. Guardar documento creado usando el servicio
+    // Guardar documento creado usando el servicio
+    this.document.date = new Date(this.viewDate.split('-').join('/'))
+    this.documentService.updateDocument(this.originalDocument, this.document)
+    this.resetDocument()
+    // Reset Component to initial state
+    this.resetForm()
   }
 
   onDelete() {
+    // console.log(this.document)
+    this.documentService.deleteDocument(this.document)
+    this.resetDocument()
+    // Reset Component to initial state
+    this.resetForm()
+  }
 
+  resetDocument() {
+    // Fill with blanks the current Document. AKA new Document
+    this.document = {
+      id: null,
+      description: '',
+      amount: 0,
+      date: new Date()
+    }
+  }
+
+  resetForm() {
+    // Reset originalDocument just here
+    this.originalDocument = {
+      id: null,
+      description: '',
+      amount: 0,
+      date: new Date()
+    }
+
+    this.isEditing = false
+    this.title = 'Add Expense'
+    this.btnText = 'Save expense'
+    // this.editingDocumentId = null
+    this.resetEditingDocId.emit()
   }
 }

@@ -15,4 +15,9 @@ export class AppComponent {
     // pasar id a document-edit
     this.editingDocumentId = id
   }
+
+  resetEditingDocId() {
+    console.log('resetEditingDocId')
+    this.editingDocumentId = null
+  }
 }

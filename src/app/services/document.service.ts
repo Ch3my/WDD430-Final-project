@@ -76,4 +76,47 @@ export class DocumentService {
         doc.date = new Date(doc.date)
         return doc
     }
+
+    deleteDocument(document: Document) {
+        if (!document) {
+            return
+        }
+        const pos = this.documents.findIndex(d => d.id === document.id);
+
+        if (pos < 0) {
+            return
+        }
+        // this.documents.splice(pos, 1)
+        // let documentsListClone = this.documents.slice()
+        // this.documentListChangedEvent.next(documentsListClone)
+        // this.storeDocuments()
+
+        this.http.delete('http://localhost:3000/documents/' + document.id)
+            .subscribe(
+                (response: Response) => {
+                    this.documents.splice(pos, 1);
+                    this.documentListChangedEvent.next(this.documents.slice());
+                    // this.sortAndSend();
+                    // Update Client?
+                });
+    }
+
+    updateDocument(originalDocument: Document, newDocument: Document) {
+        if (!originalDocument || !newDocument) {
+            return
+        }
+        let pos = this.documents.indexOf(originalDocument)
+        if (pos < 0) {
+            return
+        }
+        newDocument.id = originalDocument.id
+        this.documents[pos] = newDocument
+        this.http.put('http://localhost:3000/documents/' + originalDocument.id, newDocument)
+            .subscribe(
+                (response: Response) => {
+                    this.documents[pos] = newDocument;
+                    // this.contacts.push(response.contact)
+                    this.documentListChangedEvent.next(this.documents.slice());
+                });
+    }
 }

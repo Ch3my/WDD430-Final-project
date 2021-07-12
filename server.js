@@ -13,6 +13,7 @@ var index = require('./server/routes/app');
 // const messageRoutes = require('./server/routes/messages')
 // const contactRoutes = require('./server/routes/contacts')
 const documentsRoutes = require('./server/routes/documents')
+const categoriesRoutes = require('./server/routes/categories')
 
 // establish a connection to the mongo database
 mongoose.connect('mongodb://192.168.2.4:27017/final',
@@ -61,6 +62,7 @@ app.use('/', index);
 // app.use('/messages', messageRoutes);
 // app.use('/contacts', contactRoutes);
 app.use('/documents', documentsRoutes);
+app.use('/categories', categoriesRoutes);
 
 // ... ADD YOUR CODE TO MAP YOUR URL'S TO ROUTING FILES HERE ...
 
