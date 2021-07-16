@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Category } from '../models/category.model';
 import { Document } from '../models/document.model';
 import { DocumentService } from '../services/document.service';
@@ -19,6 +19,8 @@ export class DocumentEditComponent implements OnInit, OnChanges {
   viewDate: string = moment().format('YYYY-MM-DD')
   categoryId: number = 0
 
+  // @ViewChild('categorySel') categorySel
+  
   @Input() editingDocumentId: Number = null
   @Output() resetEditingDocId: EventEmitter<any> = new EventEmitter<any>();
 
@@ -117,8 +119,10 @@ export class DocumentEditComponent implements OnInit, OnChanges {
       id: null,
       description: '',
       amount: 0,
-      date: new Date()
+      date: new Date(),
+      category: null
     }
+    this.categoryId = 0
   }
 
   resetForm() {
@@ -127,8 +131,10 @@ export class DocumentEditComponent implements OnInit, OnChanges {
       id: null,
       description: '',
       amount: 0,
-      date: new Date()
+      date: new Date(),
+      category: null
     }
+    this.categoryId = 0
 
     this.isEditing = false
     this.title = 'Add Expense'

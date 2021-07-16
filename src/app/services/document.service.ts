@@ -60,8 +60,9 @@ export class DocumentService {
         this.http.post('http://localhost:3000/documents/', newDocument)
             .subscribe(
                 (response: { message: string, document: Document }) => {
-                    this.documents.push(response.document)
-                    this.documentListChangedEvent.next(this.documents.slice());
+                    // this.documents.push(response.document)
+                    // this.documentListChangedEvent.next(this.documents.slice());
+                    this.getDocuments()
                 });
 
     }
